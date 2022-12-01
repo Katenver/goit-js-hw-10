@@ -12,27 +12,26 @@ const KEY_API = 'fields=name,capital,population,languages,flags';
 inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
 function clearMarkups() {
-    listEl.innerHTML  = '';
-    infoEl.innerHTML = '';
+  listEl.innerHTML = '';
+  infoEl.innerHTML = '';
+}
 
-  }
 function onSearch(evt) {
   evt.preventDefault();
   let countryName = evt.target.value.trim();
 
-    if (!countryName) {
-      clearMarkups();
-      return;
-    }
-
-
-fetchCountries(countryName)
-  .then(data => createMarkup(data))
-  .catch(error => {
+  if (!countryName) {
     clearMarkups();
-    Notify.failure('Oops, there is no country with that name');
-  });
+    return;
+  }
+  fetchCountries(countryName)
+    .then(data => createMarkup(data))
+    .catch(error => {
+      clearMarkups();
+      Notify.failure('Oops, there is no country with that name');
+    });
 }
+
 function createMarkup(arr) {
   if (arr.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
@@ -56,7 +55,7 @@ function createMarkup(arr) {
         <li class = "info">Capital: ${item.capital}</li>
         <li class = "info">Population: ${item.population}</li>
         <li class = "info">Languages: ${Object.values(item.languages).join(
-          ','
+          ', '
         )}</li>`
       )
       .join('');
