@@ -11,15 +11,29 @@ const KEY_API = 'fields=name,capital,population,languages,flags';
 
 inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 
+function clearMarkups() {
+    listEl  = '';
+    infoEl = '';
+   
+  }
 function onSearch(evt) {
   evt.preventDefault();
   let countryName = evt.target.value.trim();
 
+  if (!countryName) {
+    clearMarkups();
+    return;
+  }}
+
+  
   fetchCountries(countryName)
     .then(data => createMarkup(data))
-    .catch(error => Notify.failure('Oops, there is no country with that name'));
-  return;
-}
+    .catch(error => {
+        clearMarkups();
+        Notify.failure('Oops, there is no country with that name')});
+    
+ 
+
 
 function createMarkup(arr) {
   if (arr.length > 10) {
